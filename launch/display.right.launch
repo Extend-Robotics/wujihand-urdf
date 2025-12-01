@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Arguments -->
+    <arg name="use_sim_time" default="false"/>
+    <arg name="gui" default="true"/>
+
+    <!-- Load URDF -->
+    <param name="robot_description" textfile="$(find wujihand-urdf)/urdf/right.urdf"/>
+
+    <!-- Set use_sim_time parameter -->
+    <param name="use_sim_time" value="$(arg use_sim_time)"/>
+
+    <!-- Robot State Publisher -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen"/>
+
+    <!-- Joint State Publisher GUI -->
+    <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" if="$(arg gui)"/>
+
+    <!-- Joint State Publisher (non-GUI fallback) -->
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" unless="$(arg gui)"/>
+
+    <!-- RViz -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find wujihand-urdf)/rviz/robot_display.rviz" output="screen"/>
+</launch>
